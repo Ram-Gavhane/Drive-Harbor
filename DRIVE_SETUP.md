@@ -11,6 +11,18 @@
 
 The app requests `drive.metadata.readonly`: it can read Drive names, folder structure, file metadata, and storage quota, but cannot open file contents or change Drive data.
 
-## Deployment note
+## Deployment on Vercel
 
-The current connection store is in process memory, appropriate for local development and a single running instance. For a deployed app, replace `lib/drive-session.ts` with a durable encrypted session/token store (for example Postgres plus KMS or a managed auth provider) before relying on persistent account connections.
+The session store uses authenticated AES-256-GCM encrypted, compressed, HTTP-only cookies (`lib/drive-session.ts`). This is completely stateless and serverless-ready, meaning no external database or Redis is required.
+
+### 1. Configure Vercel Environment Variables
+Add these in your Vercel project settings:
+- `GOOGLE_CLIENT_ID`: Your Google OAuth Client ID
+- `GOOGLE_CLIENT_SECRET`: Your Google OAuth Client Secret
+- `NEXT_PUBLIC_APP_URL`: Your Vercel domain (e.g., `https://your-app.vercel.app`)
+- `SESSION_SECRET`: *(Optional)* A random 32+ character string. Defaults to `GOOGLE_CLIENT_SECRET` if not provided.
+
+### 2. Update Google Cloud OAuth Credentials
+In [Google Cloud Console](https://console.cloud.google.com/) under **APIs & Services > Credentials > OAuth 2.0 Client IDs**:
+- Add **Authorized JavaScript origin**: `https://your-app.vercel.app`
+- Add **Authorized redirect URI**: `https://your-app.vercel.app/api/auth/google/callback`
