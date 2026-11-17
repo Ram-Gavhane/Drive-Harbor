@@ -26,3 +26,9 @@ Add these in your Vercel project settings:
 In [Google Cloud Console](https://console.cloud.google.com/) under **APIs & Services > Credentials > OAuth 2.0 Client IDs**:
 - Add **Authorized JavaScript origin**: `https://your-app.vercel.app`
 - Add **Authorized redirect URI**: `https://your-app.vercel.app/api/auth/google/callback`
+
+### 3. Configure OAuth Consent Screen Links (For Verification)
+In Google Cloud Console under **APIs & Services > OAuth consent screen**:
+- **Application home page**: `https://your-app.vercel.app`
+- **Application privacy policy link**: `https://your-app.vercel.app/privacy` (or `/privacy-policy`)
+- **Application terms of service link**: `https://your-app.vercel.app/terms` (or `/terms-and-conditions`)
